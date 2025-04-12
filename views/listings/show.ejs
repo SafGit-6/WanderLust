@@ -1,0 +1,201 @@
+<% layout("/layouts/boilerplate") -%>
+
+<script>
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const listing = <%- JSON.stringify(listing) %>;
+</script>
+
+
+<div class="row mt-3">
+    <div class="col-8 offset-3">
+        <h3><%= listing.title %></h3>
+    </div>
+
+    <div class="card col-6 offset-3 show-card listing-card">
+
+            <div class="swiperContainer">
+                <!-- Slider main container -->
+                <div class="swiper">
+                    <!-- Additional required wrapper -->
+                    <div class="swiper-wrapper">
+                    <!-- Slides -->
+                    <% listing.images.forEach((img) => {%>
+                        <div class="swiper-slide"><img src="<%= img.url %>" class="card-img-top show-img" alt="listing_image"></div>
+                    <% }); %>
+                    </div>
+                    <!-- If we need pagination -->
+                    <div class="swiper-pagination"></div>
+                
+                    <!-- If we need navigation buttons -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <p class="card-text">Owned by <i><%= listing.owner.username %></i> </p>
+                
+                <p class="card-text"> <%= listing.description %> </p>
+            
+                <p class="card-text"> &#8377;<%= Number(listing.price).toLocaleString("en-IN") %> </p>    
+                <p class="card-text"> <%= listing.location %> </p>    
+                <p class="card-text"> <%= listing.country %> </p>   
+                
+            </div>
+    </div> 
+ 
+        <br>
+    <% if(currUser && currUser._id.equals(listing.owner._id)) {%> 
+        <div class="btns mb-3">
+                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
+
+                    <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
+                    <button class="btn btn-dark offset-5">Delete</button>
+                    </form>
+        </div>
+    <% } %>
+
+    <div class="col-8 offset-3 mb-3" >
+        
+        <% if(currUser && !currUser._id.equals(listing.owner._id)) {%>
+            <hr>
+        <h4>Leave a Review</h4>
+        <form action="/listings/<%= listing.id %>/reviews" method="post" novalidate class="needs-validation">
+
+            <div class="mb-3 mt-3">
+                <label for="rating" class="form-label">Rating</label>
+                <fieldset class="starability-slot">
+                
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+              </fieldset>
+            </div>
+            
+
+            <div class="mb-3 mt-3">
+                <label for="comment" class="form-label">Comments</label>
+                <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+                <div class="invalid-feedback">
+                    Please add some comments for review
+                </div>
+            </div>
+            <button class="btn btn-outline-dark">Submit</button>
+        </form><hr>
+        <% } %>
+
+        
+
+        
+          <% if(listing.reviews.length > 0) {%>
+          <div class="row">
+            <p><b>All Reviews</b></p>
+            <% for(review of listing.reviews) {%>
+                <div class="card col-5 ms-3 mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@<%= review.author.username %></h5>
+                        <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+                        <p class="card-text"><%= review.comment %></p>                        
+                        <form class="mb-3" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                        <button class="btn btn-sm btn-dark" >Delete</button>
+                        </form>
+                    </div>
+                </div>
+            <% } %>
+          </div>
+          <% } %>
+    
+    </div>
+ 
+     <% if(currUser && !currUser._id.equals(listing.owner._id)) {%>   
+        <div class="col-8 offset-3">
+            <button class="btn btn-dark resrv-btn" id="reserve-btn">Reserve</button>
+        </div>
+    <% } %> 
+
+    <!-- Terms & Conditions Section -->
+    <div class="col-6 offset-3 mt-4 mb-4" id="terms-conditions" style="display: none;">
+        <div class="card p-4">
+            <h4 class="mb-3">Terms & Conditions</h4>
+            <p>By making a reservation, you agree to the following terms:</p>
+            <ul>
+                <li>You must provide valid identification upon arrival.</li>
+                <li>Any damages to the property will be charged accordingly.</li>
+                <li>Check-in and check-out times must be followed.</li>
+            </ul>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="agree-checkbox">
+                <label class="form-check-label" for="agree-checkbox">I agree to the Terms & Conditions</label>
+            </div>
+            <button class="btn btn-primary mt-3" id="continue-btn" disabled>Continue to Reservation</button>
+        </div>
+    </div>
+
+    
+    <!-- Reservation Form -->
+    <div class="col-6 offset-3 mt-4 mb-4" id="reservation-form" style="display: none;">
+        <div class="card p-4">
+            <h4 class="mb-3">Reservation Details</h4>
+            <form action="/listings/<%= listing._id %>/reserve" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" name="reservation[name]" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Your Email</label>
+                    <input type="email" name="reservation[email]" class="form-control" required>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col">
+                        <label for="checkin" class="form-label">Check-in Date</label>
+                        <input type="date" name="reservation[checkin]" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <label for="checkout" class="form-label">Check-out Date</label>
+                        <input type="date" name="reservation[checkout]" class="form-control" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="guests" class="form-label">Number of Guests</label>
+                    <input type="number" name="reservation[guests]" class="form-control" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-success">Send Reservation</button>
+            </form>
+        </div>
+    </div>
+    
+
+    <div class="col-8 offset-3 mb-3 mt-3">
+        <h3>Where you'll be</h3>
+        <div id="map"></div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("reserve-btn").addEventListener("click", function() {
+        document.getElementById("terms-conditions").style.display = "block";
+        this.style.display = "none"; // Hide the Reserve button after clicking
+    });
+
+    document.getElementById("agree-checkbox").addEventListener("change", function() {
+        document.getElementById("continue-btn").disabled = !this.checked;
+    });
+
+    document.getElementById("continue-btn").addEventListener("click", function() {
+        document.getElementById("terms-conditions").style.display = "none";
+        document.getElementById("reservation-form").style.display = "block";
+    });
+</script>
+
+<script src="/js/map.js"></script>
+

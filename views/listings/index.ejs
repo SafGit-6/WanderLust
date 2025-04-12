@@ -1,0 +1,337 @@
+<% layout("/layouts/boilerplate") -%>
+
+   <style>
+
+    #slider_switch{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+    }
+
+
+    .slider {
+        position: relative;
+        
+        width: 60%;
+        overflow: hidden;
+    }
+
+
+    .slider .tabs{
+        min-width: 99%;
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+    }
+
+    .slider .tabs::-webkit-scrollbar{
+        display: none;
+    }
+
+    .icon .left-arrow,
+    .icon .right-arrow {
+        display: inline-block;
+        width: 2.4rem;
+        height: 2.4rem;
+
+        
+        border-radius: 50%;
+        border: 1px solid grey;
+        text-align: center;
+
+        
+        /* Proper font styling */
+        font-family: "Poppins", sans-serif; 
+        font-weight: 200;
+        font-size: 2rem;
+        
+        /* Center text vertically */
+        line-height: 2.4rem;
+    }
+
+    .icon span:hover {
+        background-color: rgba(255, 255, 255, 0.794);
+        box-shadow: 0 0 10px 2px rgb(221, 221, 221);
+        cursor: pointer;
+    }
+
+    .slider .icon.hide{
+        display:none;
+    }
+
+
+/* gpt solution */
+
+.slider .icon:first-child {
+    left: 0;
+    width: 4rem; /* Increase width slightly for better coverage */
+    z-index: 2; /* Ensure it appears above tabs */
+    background: linear-gradient(to right, white 70%, transparent);
+}
+
+.slider .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4rem; /* Adjust width for better overlay */
+    height: 100%;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    z-index: 2; /* Make sure arrows appear on top */
+}
+
+.slider .icon:last-child {
+    justify-content: flex-end;
+    right: 0;
+    background: linear-gradient(to left, white 70%, transparent);
+}
+
+
+/* -- */
+
+    .tab{
+        text-align: center;
+        margin-right: 2.5rem;
+        margin-top: 2rem;
+        opacity: 0.7;
+        transition: .2s ease-in-out;
+    }
+
+    .tab:hover{
+        opacity: 1;
+        cursor: pointer;
+    }
+
+
+    /* not working */
+    .tab.active {   
+        opacity: 1;
+        background-color: silver !important;
+    }
+
+    .tab pre{
+        font-size: 0.8rem;
+        font-family: "Plus Jakarta Sans",sans-serif !important;
+    }
+
+    .tax-info{
+        display: none;
+    }
+
+    .tax-toggle{
+        border: 1px solid black;
+        border-radius: 1rem;
+        height: 3.25rem;
+        /* makechanges in height */
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    a {
+        text-decoration: none; /* Removes underline */
+        color: inherit; /* Inherits text color from parent */
+    }
+
+
+   </style>
+
+
+    <div id="slider_switch">
+
+        <div class="slider">
+
+            <div class="icon hide">
+                <span class="left-arrow">&lt;</span>
+            </div>
+
+                <div class="tabs">
+                    <a href="/listings/grp/Rooms">
+                        <div class="tab ">
+                        <div><i class="fa-solid fa-bed"></i></div>
+                        <pre>Rooms</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Iconic Cities">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-mountain-city"></i></div>
+                        <pre>Iconic Cities</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Mountains">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-mountain"></i></div>
+                        <pre>Mountains</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Castles">
+                        <div class="tab">
+                        <div><i class="fa-brands fa-fort-awesome"></i></div>
+                        <pre>Castles</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Amazing Pools">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-person-swimming"></i></div>
+                        <pre>Amazing Pools</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Camping">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-campground"></i></div>
+                        <pre>Camping</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Farms">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-cow"></i></div>
+                        <pre>Farms</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Arctic">
+                        <div class="tab">
+                        <div><i class="fa-regular fa-snowflake"></i></div>
+                        <pre>Arctic</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Domes">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-igloo"></i></div>
+                        <pre>Domes</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Boats">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-ship"></i></div>
+                        <pre>Boats</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Play">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-baseball-bat-ball"></i></div>
+                        <pre>Play</pre>
+                        </div>
+                    </a>
+                    
+                    <a href="/listings/grp/Beach">
+                        <div class="tab">
+                        <div><i class="fa-solid fa-umbrella-beach"></i></div>
+                        <pre>Beach</pre>
+                        </div>
+                    </a>
+                    
+
+                </div>
+
+            
+
+            <div class="icon">
+                <span class="right-arrow">&gt;</span>
+            </div>
+    
+            
+        </div>
+
+      
+        
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+            </div>
+        </div>
+
+
+    </div>
+
+     <!-- --- -->
+
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+        <% for(listing of allListings){ %>
+            <a href="/listings/<%= listing._id%>" class="listing-link">
+                <div class="card col listing-card" >
+                        <img src="<%= listing.images[0].url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
+                        <div class="card-img-overlay"></div>
+                        <div class="card-body">
+                            <p class="card-text">
+                            <b><%= listing.title %></b> <br>
+                            &#8377;<%= Number(listing.price).toLocaleString("en-IN") %> / night
+                            <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
+                            </p>
+                        </div>
+                </div>
+            </a>
+                
+        <% } %>
+
+    </div>
+
+    <script>
+        let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+        taxSwitch.addEventListener("click",()=>{
+            let taxInfo = document.getElementsByClassName("tax-info");
+            for(info of taxInfo){
+                if(info.style.display !="inline"){
+                    info.style.display = "inline";
+                }else{
+                    info.style.display = "none";
+                }
+            }
+        })
+
+        const tab = document.querySelector('.tabs'),
+        badges = tab.querySelectorAll('.tab'),
+        icons = document.querySelectorAll('.icon span'),
+        {clientWidth, scrollWidth} = tab;
+    
+    badges.forEach(badge => {
+        badge.addEventListener('click', ()=>{
+            tab.querySelector('.active').classList.remove('active');
+            badge.classList.add('active');
+
+            badge.scrollIntoView({
+                inline:"center"
+            })
+        })
+    });
+    
+    tab.addEventListener('scroll', (e)=>{
+        updateIcons(e.target.scrollLeft);
+    })
+
+    icons.forEach(icon => {
+        icon.addEventListener('click', ()=>{
+            tab.style = "";
+            tab.scrollLeft += icon.classList.contains('right-arrow') ?300 : -300;
+        })
+    })
+
+    
+
+    tab.addEventListener('wheel', (e)=>{
+        tab.style.scrollBehavior = "auto";
+        tab.scrollLeft += e.deltaY;
+    })
+
+    function updateIcons(scrolled_width){
+        icons[0].parentElement.classList.toggle('hide', scrolled_width <= 1);
+        icons[1].parentElement.classList.toggle('hide', scrollWidth -(clientWidth + scrolled_width) <= 1);
+    }
+    </script>
+    
+   
+
+
+
