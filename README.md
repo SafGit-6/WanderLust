@@ -58,41 +58,6 @@ axios – HTTP requests
 
 @mapbox/mapbox-sdk – Geocoding and map services
 
-📁 Project Structure
-
-WanderLust/
-├── app.js                     # Main Express application entry point
-├── package.json               # Node.js dependencies and scripts
-├── cloudConfig.js             # Cloudinary configuration for image storage
-├── .env                       # Environment variables (not included in repo)
-├── public/                    # Static assets (JS, CSS, images)
-│   └── js/
-│       └── map.js             # Map rendering with Maptiler SDK
-├── init/
-│   └── index.js               # MongoDB initialization and seeding
-├── models/                    # Mongoose schema definitions
-│   └── listing.js             # Listing schema and logic
-│   └── review.js              # Review schema
-│   └── user.js                # User schema
-├── controllers/               # Route business logic
-│   └── listings.js            # Listing controller logic
-│   └── reviews.js             # Review controller logic
-│   └── users.js               # User controller logic
-├── routes/                    # Express routers
-│   └── listing.js             # Listing routes
-│   └── review.js              # Review routes
-│   └── user.js                # User routes
-├── views/                     # EJS templates for server-side rendering
-│   └── listings/              # Templates for listings
-│   └── users/                 # User-related pages
-│   └── reviews/               # Review pages
-│   └── partials/              # Reusable layout components
-│   └── error.ejs              # Error page template
-├── utils/                     # Utility modules
-│   └── ExpressError.js        # Custom error handling
-│   └── wrapAsync.js           # Async error wrapper
-├── schema.js                  # Joi validation schemas
-
 
 # WanderLust Project Setup Instructions
 
